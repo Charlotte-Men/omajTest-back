@@ -18,12 +18,13 @@
   },
   "homepage": "https://github.com/Charlotte-Men/omajTest-back#readme",
   "dependencies": {
+    "@prisma/client": "^3.9.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.2",
-    "mysql2": "^2.3.3"
+    "express": "^4.17.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "prisma": "^3.9.2"
   }
 }
