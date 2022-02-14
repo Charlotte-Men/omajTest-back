@@ -94,10 +94,43 @@ const findProductsBySize = async (sizeId) => {
   return result;
 };
 
+const findOneProduct = async (id) => {
+  const result = await prisma.product.findUnique({
+    where: { product_id: parseInt(id)}
+  });
+  return result;
+};
+
+const createOneProduct = async (body) => {
+  const result = await prisma.product.create({
+    data: { ...body },
+  });
+  const newProduct = await findOneProduct(result.product_id);
+  return newProduct;
+};
+
+const updateOneProduct = async (id, body) => {
+  const result = await prisma.product.update({
+    where: { product_id: parseInt(id) },
+    data: { ...body },
+  });
+  return result;
+};
+
+const removeOneProduct = async (id) => {
+  const result = await prisma.product.delete({
+    where: { product_id: parseInt(id) }
+  });
+  return result;
+};
+
 module.exports = { 
   findAllProducts, 
   findProductsBySize, 
   findProductsByCategory, 
   findProductsByBrand,
-  findProductsByColor
+  findProductsByColor,
+  createOneProduct,
+  updateOneProduct,
+  removeOneProduct
 };

@@ -3,7 +3,10 @@ const {
   findProductsBySize, 
   findProductsByCategory,
   findProductsByBrand,
-  findProductsByColor
+  findProductsByColor,
+  createOneProduct,
+  updateOneProduct,
+  removeOneProduct
  } = require('../model/productModel')
 
 const getAllProducts = async (req, res) => {
@@ -51,10 +54,41 @@ const getAllBySize = async (req, res) => {
   }
 };
 
+
+const postOneProduct = async (req, res) => {
+  try {
+    const result = await createOneProduct(req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+const putOneProduct = async (req, res) => {
+  try {
+    const result = await updateOneProduct(req.params.pdtId, req.body);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+const deleteOneProduct = async (req, res) => {
+  try {
+    const result = await removeOneProduct(req.params.pdtId);
+    res.status(200).send('This product has been successfully removed');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
 module.exports = { 
   getAllProducts, 
   getAllBySize, 
   getAllByCategory,
   getAllByBrand,
-  getAllByColor
+  getAllByColor,
+  postOneProduct,
+  putOneProduct,
+  deleteOneProduct
  };
