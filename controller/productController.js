@@ -47,7 +47,7 @@ const getAllByColor = async (req, res) => {
 
 const getAllBySize = async (req, res) => {
   try {
-    const result = await findProductsBySize(req.params.sizeId);
+    const result = await findProductsBySize(req.params.size);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send(`internal server error : ${err.message}`);

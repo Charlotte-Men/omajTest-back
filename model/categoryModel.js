@@ -13,7 +13,7 @@ const findOneCategory = async (id) => {
   return result;
 };
 
-const createOne = async (body) => {
+const createOneCategory = async (body) => {
   const result = await prisma.category.create({
     data: { ...body },
   });
@@ -21,7 +21,7 @@ const createOne = async (body) => {
   return newCategory;
 };
 
-const updateOne = async (id, body) => {
+const updateOneCategory = async (id, body) => {
   const result = await prisma.category.update({
     where: { category_id: parseInt(id) },
     data: { ...body },
@@ -29,11 +29,16 @@ const updateOne = async (id, body) => {
   return result;
 };
 
-const removeOne = async (id) => {
+const removeOneCategory = async (id) => {
   const result = await prisma.category.delete({
     where: { category_id: parseInt(id) }
   });
   return result;
 };
 
-module.exports = { findAllCategories, createOne, updateOne, removeOne };
+module.exports = { 
+  findAllCategories, 
+  createOneCategory, 
+  updateOneCategory, 
+  removeOneCategory 
+};

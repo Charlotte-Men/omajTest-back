@@ -1,4 +1,9 @@
-const { findAllCategories, createOne, updateOne, removeOne } = require('../model/categoryModel');
+const { 
+  findAllCategories, 
+  createOneCategory, 
+  updateOneCategory, 
+  removeOneCategory 
+} = require('../model/categoryModel');
 
 const getAllCategories = async (req, res) => {
   try {
@@ -9,31 +14,36 @@ const getAllCategories = async (req, res) => {
   }
 };
 
-const postOne = async (req, res) => {
+const postOneCategory = async (req, res) => {
   try {
-    const result = await createOne(req.body);
+    const result = await createOneCategory(req.body);
     res.status(201).json(result);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-const putOne = async (req, res) => {
+const putOneCategory = async (req, res) => {
   try {
-    const result = await updateOne(req.params.catId, req.body);
+    const result = await updateOneCategory(req.params.catId, req.body);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-const deleteOne = async (req, res) => {
+const deleteOneCategory = async (req, res) => {
   try {
-    const result = await removeOne(req.params.catId);
+    const result = await removeOneCategory(req.params.catId);
     res.status(200).send('This category has been successfully removed');
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-module.exports = { getAllCategories, postOne, putOne, deleteOne };
+module.exports = { 
+  getAllCategories, 
+  postOneCategory, 
+  putOneCategory, 
+  deleteOneCategory 
+};

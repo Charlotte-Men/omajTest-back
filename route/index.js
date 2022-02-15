@@ -1,9 +1,9 @@
 const productRouter = require('./productRouter');
 const categoryRouter = require('./categoryRouter');
 
-const router = (app) => {
+const routes = (app) => {
   app.use('/products', productRouter);
   app.use('/categories', categoryRouter);
 };
 
-module.exports = { router };
+module.exports = { routes };
