@@ -1,98 +1,22 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const findAllProducts = async () => {
+const findProducts = async (color_req, brand_req, size_req, category_req) => {
   const result = await prisma.product.findMany({
-    include: {
-      category: true,
-      brand: true,
-      color: true,
-      product_has_size: {
-        include: {
-          size: true,
-        },
-      },
+    where: {
+      AND: [
+        {product_category: category_req.length !== 0 ? { in: category_req } : undefined,},
+        {product_color: color_req.length !== 0 ? { in: color_req } : undefined,},
+        {product_brand: brand_req.length !== 0 ? { in: brand_req } : undefined,},
+        {sizes: {
+          some : { 
+            size_id: size_req.length !== 0 ? {in: size_req } : undefined,
+        },},},
+      ],
     },
   });
   return result;
-};
-
-const findProductsByCategory = async (category) => {
-  const result = await prisma.category.findMany({
-    where: { category_name: category },
-    include: {
-      product: {
-        include: {
-          brand: true,
-          color: true,
-          product_has_size: {
-            include : {
-              size: true
-            }
-          }
-        },
-      },
-    },
-  })
-  return result;
-};
-
-const findProductsByBrand = async (brand) => {
-  const result = await prisma.brand.findMany({
-    where: { brand_name: brand },
-    include: {
-      product: {
-        include: {
-          category: true,
-          color: true,
-          product_has_size: {
-            include : {
-              size: true
-            }
-          }
-        },
-      },
-    },
-  })
-  return result;
-};
-
-const findProductsByColor = async (col) => {
-  const result = await prisma.color.findMany({
-    where: { color_name: col },
-    include: {
-      product: {
-        include: {
-          category: true,
-          brand: true,
-          product_has_size: {
-            include : {
-              size: true
-            }
-          }
-        },
-      },
-    },
-  })
-  return result;
-};
-
-const findProductsBySize = async (sizeId) => {
-  const result = await prisma.product_has_size.findMany({
-    where: { size_id: parseInt(sizeId) },
-    include: {
-      size: true,
-      product: {
-        include: {
-          category: true,
-          brand: true,
-          color: true,
-        },
-      },
-    },
-  })
-  return result;
-};
+}
 
 const findOneProduct = async (id) => {
   const result = await prisma.product.findUnique({
@@ -125,11 +49,7 @@ const removeOneProduct = async (id) => {
 };
 
 module.exports = { 
-  findAllProducts, 
-  findProductsBySize, 
-  findProductsByCategory, 
-  findProductsByBrand,
-  findProductsByColor,
+  findProducts,
   createOneProduct,
   updateOneProduct,
   removeOneProduct

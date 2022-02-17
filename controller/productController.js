@@ -1,59 +1,42 @@
 const { 
-  findAllProducts, 
-  findProductsBySize, 
-  findProductsByCategory,
-  findProductsByBrand,
-  findProductsByColor,
+  findProducts,
   createOneProduct,
   updateOneProduct,
   removeOneProduct
  } = require('../model/productModel')
 
-const getAllProducts = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
-    const result = await findAllProducts();
+    let size_req=[];
+    let size = []
+    let category_req=[];
+    let category =[];
+    let color_req=[];
+    let color =[];
+    let brand_req=[];
+    let brand =[];
+    if (req.query.size_id) {
+      req.query.size_id.lenght===1 ? size = [req.query.size_id] : size = req.query.size_id ;
+      size_req = size.map(x => parseInt(x));
+    }
+    if (req.query.category_id) {
+      req.query.category_id.length===1 ? category = [req.query.category_id] : color = req.query.category_id;
+      category_req = category.map(x => parseInt(x));
+    }
+    if (req.query.color_id) {
+      req.query.color_id.length===1 ? color = [req.query.color_id] : color = req.query.color_id;
+      color_req = color.map(x => parseInt(x));
+    }
+    if (req.query.brand_id) {
+      req.query.brand_id.length==1 ? brand = [req.query.brand_id] : brand = req.query.brand_id;
+      brand_req = brand.map((x) => parseInt(x));
+    }
+    const result = await findProducts(color_req, brand_req, size_req, category_req);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).send(`internal server error : ${err.message}`);
   }
 };
-
-const getAllByCategory = async (req, res) => {
-  try {
-    const result = await findProductsByCategory(req.params.cat);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(`internal server error : ${err.message}`);
-  }
-};
-
-const getAllByBrand = async (req, res) => {
-  try {
-    const result = await findProductsByBrand(req.params.brand);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(`internal server error : ${err.message}`);
-  }
-};
-
-const getAllByColor = async (req, res) => {
-  try {
-    const result = await findProductsByColor(req.params.col);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(`internal server error : ${err.message}`);
-  }
-};
-
-const getAllBySize = async (req, res) => {
-  try {
-    const result = await findProductsBySize(req.params.size);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send(`internal server error : ${err.message}`);
-  }
-};
-
 
 const postOneProduct = async (req, res) => {
   try {
@@ -83,11 +66,7 @@ const deleteOneProduct = async (req, res) => {
 };
 
 module.exports = { 
-  getAllProducts, 
-  getAllBySize, 
-  getAllByCategory,
-  getAllByBrand,
-  getAllByColor,
+  getProducts,
   postOneProduct,
   putOneProduct,
   deleteOneProduct
