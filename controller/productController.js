@@ -16,19 +16,19 @@ const getProducts = async (req, res) => {
     let brand_req=[];
     let brand =[];
     if (req.query.size_id) {
-      req.query.size_id.lenght===1 ? size = [req.query.size_id] : size = req.query.size_id ;
+      req.query.size_id.lenght!== NaN ? size = [req.query.size_id] : size = req.query.size_id ;
       size_req = size.map(x => parseInt(x));
     }
     if (req.query.category_id) {
-      req.query.category_id.length===1 ? category = [req.query.category_id] : color = req.query.category_id;
+      req.query.category_id.length!== NaN ? category = [req.query.category_id] : category = req.query.category_id;
       category_req = category.map(x => parseInt(x));
     }
     if (req.query.color_id) {
-      req.query.color_id.length===1 ? color = [req.query.color_id] : color = req.query.color_id;
+      req.query.color_id.length!== NaN ? color = [req.query.color_id] : color = req.query.color_id;
       color_req = color.map(x => parseInt(x));
     }
     if (req.query.brand_id) {
-      req.query.brand_id.length==1 ? brand = [req.query.brand_id] : brand = req.query.brand_id;
+      req.query.brand_id.length!== NaN ? brand = [req.query.brand_id] : brand = req.query.brand_id;
       brand_req = brand.map((x) => parseInt(x));
     }
     const result = await findProducts(color_req, brand_req, size_req, category_req);
