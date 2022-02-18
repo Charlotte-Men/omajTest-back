@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model brand {
+  brand_id   Int       @id @unique(map: "brand_id_UNIQUE") @default(autoincrement())
+  brand_name String    @db.VarChar(45)
+  product    product[]
+}
+
+model category {
+  category_id   Int       @id @unique(map: "category_id_UNIQUE") @default(autoincrement())
+  category_name String    @db.VarChar(45)
+  product       product[]
+}
+
+model color {
+  color_id   Int       @id @unique(map: "color_id_UNIQUE") @default(autoincrement())
+  color_name String    @db.VarChar(45)
+  product    product[]
+}
+
+model product {
+  product_id       Int             @id @unique(map: "product_id_UNIQUE") @default(autoincrement())
+  product_name     String          @db.VarChar(45)
+  product_price    Decimal         @db.Decimal(5, 2)
+  product_img      String?         @db.VarChar(255)
+  product_category Int?
+  product_brand    Int?
+  product_color    Int?
+  brand            brand?          @relation(fields: [product_brand], references: [brand_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_brand1")
+  category         category?       @relation(fields: [product_category], references: [category_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_category")
+  color            color?          @relation(fields: [product_color], references: [color_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_color1")
+  sizes    size[]
+
+  @@index([product_brand], map: "fk_product_brand1_idx")
+  @@index([product_category], map: "fk_product_category_idx")
+  @@index([product_color], map: "fk_product_color1_idx")
+}
+
+model size {
+  size_id       Int             @id @unique(map: "size_id_UNIQUE") @default(autoincrement())
+  size_value    String          @db.VarChar(10)
+  products product[]
+}
+
+// model productTosize {
+//   A       Int
+//   B       Int
+//   product product @relation("productTosizeToproduct", fields: [A], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_has_size_product1")
+//   size    size    @relation(fields: [B], references: [size_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_product_has_size_size1")
+
+//   @@id([A, B])
+//   @@index([A], map: "fk_product_has_size_product1_idx")
+//   @@index([B], map: "fk_product_has_size_size1_idx")
+//   @@map("_productTosize")
+// }
